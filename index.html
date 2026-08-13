@@ -23,7 +23,7 @@
           <span class="nav-icon">◈</span> Dashboard
         </button>
         <button class="nav-item" data-page="clone">
-          <span class="nav-icon">◎</span> Clone Voice
+          <span class="nav-icon">◎</span> Add Voices
         </button>
         <button class="nav-item" data-page="synthesize">
           <span class="nav-icon">▶</span> Synthesize
@@ -37,7 +37,7 @@
         <div class="avatar">B</div>
         <div>
           <div class="user-name">Braiden</div>
-          <div class="user-plan">Pro Plan</div>
+          <div class="user-plan">xAI Connected</div>
         </div>
       </div>
     </aside>
@@ -49,31 +49,31 @@
         <header class="page-header">
           <div>
             <h1>Dashboard</h1>
-            <p class="subtitle">Clone voices and generate natural speech with AI</p>
+            <p class="subtitle">Real voice cloning powered by xAI Custom Voices + TTS</p>
           </div>
-          <button class="btn primary" onclick="switchPage('clone')">+ Clone Voice</button>
+          <button class="btn primary" onclick="switchPage('clone')">+ Add Voice</button>
         </header>
 
         <div class="stats">
           <div class="stat-card">
-            <div class="stat-label">Cloned Voices</div>
+            <div class="stat-label">Saved Voices</div>
             <div class="stat-value" id="stat-voices">0</div>
-            <div class="stat-sub">Local library</div>
+            <div class="stat-sub">Custom + Built-in</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Syntheses</div>
             <div class="stat-value" id="stat-synths">0</div>
-            <div class="stat-sub">This session</div>
+            <div class="stat-sub">This browser</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Browser Voices</div>
-            <div class="stat-value" id="stat-browser">—</div>
-            <div class="stat-sub">Available now</div>
+            <div class="stat-label">API Status</div>
+            <div class="stat-value" id="api-status" style="font-size:1.1rem">—</div>
+            <div class="stat-sub">xAI TTS</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Status</div>
             <div class="stat-value" style="font-size:1.1rem">Ready</div>
-            <div class="stat-sub">Web Speech API</div>
+            <div class="stat-sub">Real cloning</div>
           </div>
         </div>
 
@@ -90,73 +90,57 @@
           <textarea id="quick-text" placeholder="Enter the text you want to synthesize with a selected voice..."></textarea>
           <div class="controls-row">
             <select id="quick-voice"></select>
-            <select id="quick-rate">
-              <option value="0.8">Speed: 0.8x</option>
-              <option value="1.0" selected>Speed: 1.0x</option>
-              <option value="1.2">Speed: 1.2x</option>
-              <option value="1.5">Speed: 1.5x</option>
-            </select>
-            <select id="quick-pitch">
-              <option value="0.8">Pitch: Low</option>
-              <option value="1.0" selected>Pitch: Normal</option>
-              <option value="1.2">Pitch: High</option>
-            </select>
             <button class="btn primary" onclick="speakQuick()">Generate ▶</button>
           </div>
         </div>
       </section>
 
-      <!-- CLONE -->
+      <!-- ADD VOICES -->
       <section id="clone" class="page">
         <header class="page-header">
           <div>
-            <h1>Clone a New Voice</h1>
-            <p class="subtitle">Upload or record samples. This demo simulates cloning and stores the voice locally.</p>
+            <h1>Add Voices</h1>
+            <p class="subtitle">Add any xAI Voice ID (your custom clones or built-in voices like eve, ara, leo…)</p>
           </div>
         </header>
 
-        <div class="upload-zone" id="upload-zone">
-          <div class="upload-icon">⬆</div>
-          <h3>Drag & drop audio files here</h3>
-          <p>MP3, WAV, M4A • or record directly (demo uses browser mic)</p>
-          <div class="btn-row">
-            <label class="btn primary">
-              Upload Files
-              <input type="file" id="file-input" accept="audio/*" multiple hidden />
-            </label>
-            <button class="btn secondary" id="record-btn">● Record</button>
+        <!-- API Key -->
+        <div class="card" style="margin-bottom: 24px;">
+          <label class="card-label">xAI API Key</label>
+          <div class="controls-row">
+            <input type="password" id="api-key-input" placeholder="Paste your xAI API key here" style="flex:1; min-width:200px;" />
+            <button class="btn primary" onclick="saveApiKey()">Save Key</button>
           </div>
-          <div id="record-status" class="record-status"></div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:10px;">
+            The key is stored only in your browser (localStorage). Never share it publicly.
+          </p>
         </div>
 
-        <div class="form-row">
-          <div class="field">
-            <label>Voice Name</label>
-            <input type="text" id="clone-name" placeholder="e.g. My Natural Voice" />
+        <!-- Add new voice -->
+        <div class="card">
+          <label class="card-label">Add a New Voice</label>
+          <div class="form-row">
+            <div class="field">
+              <label>Display Name</label>
+              <input type="text" id="new-voice-name" placeholder="e.g. My Cloned Voice or Eve" />
+            </div>
+            <div class="field">
+              <label>Voice ID</label>
+              <input type="text" id="new-voice-id" placeholder="e.g. gno86tuhzvnt or eve" />
+            </div>
           </div>
-          <div class="field">
-            <label>Primary Language</label>
-            <select id="clone-lang">
-              <option>English (Australian)</option>
-              <option>English (US)</option>
-              <option>English (UK)</option>
-              <option>Other</option>
-            </select>
+          <div class="action-row">
+            <button class="btn primary large" onclick="addVoice()">Add Voice →</button>
           </div>
         </div>
 
-        <div class="tips-card">
-          <h3>Tips for best results</h3>
+        <div class="tips-card" style="margin-top: 24px;">
+          <h3>How to get more Voice IDs</h3>
           <ul>
-            <li>Speak clearly in a quiet environment with minimal background noise</li>
-            <li>Use varied sentences and natural intonation</li>
-            <li>60–90 seconds of high-quality audio usually produces excellent clones</li>
-            <li>Multiple short samples often work better than one long recording</li>
+            <li>Your custom clones: Console → Voice Library → three dots → Copy Voice ID</li>
+            <li>Built-in voices: eve, ara, leo, rex, sal, luna, orion, carina, helix, and many more</li>
+            <li>You can add as many as you want — they all appear in the dropdowns</li>
           </ul>
-        </div>
-
-        <div class="action-row">
-          <button class="btn primary large" id="train-btn" onclick="startTraining()">Start Training →</button>
         </div>
       </section>
 
@@ -165,9 +149,9 @@
         <header class="page-header">
           <div>
             <h1>Synthesize Speech</h1>
-            <p class="subtitle">Turn any text into natural speech using available voices</p>
+            <p class="subtitle">Turn any text into natural speech using your voices</p>
           </div>
-          <button class="btn secondary" onclick="downloadLastAudio()" id="export-btn" disabled>Export</button>
+          <button class="btn secondary" onclick="downloadLastAudio()" id="export-btn" disabled>Export MP3</button>
         </header>
 
         <div class="synth-layout">
@@ -177,18 +161,13 @@
               <textarea id="synth-text" rows="8" placeholder="Type or paste the text you want spoken..."></textarea>
             </div>
             <div class="card">
-              <label class="card-label">Voice & Delivery</label>
+              <label class="card-label">Voice</label>
               <div class="controls-grid">
                 <select id="synth-voice"></select>
                 <button class="btn primary" onclick="speakMain()">Generate</button>
               </div>
               <div class="slider-group">
-                <label>Speaking Rate <span id="rate-val">1.0x</span></label>
-                <input type="range" id="synth-rate" min="0.5" max="2" step="0.1" value="1" />
-              </div>
-              <div class="slider-group">
-                <label>Pitch <span id="pitch-val">1.0</span></label>
-                <input type="range" id="synth-pitch" min="0.5" max="2" step="0.1" value="1" />
+                <label>Note: Speed/pitch controls are handled by the xAI model</label>
               </div>
             </div>
           </div>
@@ -201,7 +180,7 @@
               </div>
               <div class="player">
                 <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-                <span id="time-display">0:00 / 0:00</span>
+                <span id="time-display">Ready</span>
               </div>
             </div>
             <div class="card">
@@ -217,7 +196,7 @@
         <header class="page-header">
           <div>
             <h1>Voice Library</h1>
-            <p class="subtitle">Your cloned and system voices</p>
+            <p class="subtitle">All your saved voices (custom + built-in)</p>
           </div>
           <input type="search" id="search-voices" placeholder="🔍 Search voices..." />
         </header>
